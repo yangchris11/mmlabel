@@ -8,8 +8,7 @@ import tqdm
 
 import pycocotools.mask as cocomask
 
-video_basename = 'cam2'
-
+video_basename = 'CAM10-2021-0224-135954-140054'
 
 def get_mask_IOU(mask1, mask2):
     #print(mask1)
@@ -62,7 +61,6 @@ for i, frame in enumerate(tqdm.tqdm(video)):
     pairs = sorted(zip(result_bbox[0], result_mask[0]), key = lambda x: x[0][0]) 
 
 
-
     for bbox, mask in pairs:
         if bbox[-1] >= 0.9:
             rle_code = cocomask.encode(np.asfortranarray(mask))
@@ -74,8 +72,10 @@ for i, frame in enumerate(tqdm.tqdm(video)):
                 rle_code['counts'].decode('ascii')
             ))
             start += 1
-        
-    model.show_result(frame, result, score_thr=1.1, out_file='../msc/{}/img/{:06d}.jpg'.format(video_basename ,i+1))
+    
+    # original image will be store in /msc/{videoname}/img/xxxxxx.jpg
+    model.show_result(frame, result, score_thr=2, out_file='../msc/{}/img/{:06d}.jpg'.format(video_basename ,i+1))
+    # detection result will be store in /msc/{videoname}/det/xxxxxx.jpg
     model.show_result(frame, result_person_only, score_thr=0.9, bbox_color='red',text_color='red',out_file='../msc/{}/det/{:06d}.jpg'.format(video_basename, i+1))
 
     

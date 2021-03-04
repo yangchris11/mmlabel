@@ -14,7 +14,7 @@ def get_bbox(img):
 
 
 # video name
-video_basename = 'cam1'
+video_basename = 'CAM10-2021-0224-135954-140054'
 
 # Specify the path to model config and checkpoint file
 config_file = '../configs/cascade_rcnn/cascade_mask_rcnn_x101_32x4d_fpn_1x_coco.py'
@@ -26,7 +26,7 @@ model = init_detector(config_file, checkpoint_file, device='cuda:0')
 
 # groundtruth path to read
 gt_filename = 'gt_{}.txt'.format(video_basename)
-gt_filename = 'label_cam1.txt'
+# gt_filename = 'label_cam1.txt'
 f = open(gt_filename, 'r')
 
 video_filename = '../data/{}.mp4'.format(video_basename)
@@ -52,14 +52,14 @@ for line in f.readlines():
     ymin, xmin, ymax, xmax = get_bbox(mask)
 
     if frameid not in bbox_frame:
-        bbox_frame[frameid] = [np.zeros((0, 5)) for _ in range(7)]
-        mask_frame[frameid] = [[] for _ in range(7)]
+        bbox_frame[frameid] = [np.zeros((0, 5)) for _ in range(10)]
+        mask_frame[frameid] = [[] for _ in range(10)]
 
 
     bbox_frame[frameid][objid] = np.asarray([[xmin, ymin, xmax, ymax, 1]])
     mask_frame[frameid][objid] = np.asarray([mask])
         
-model.CLASSES = ('id0', 'id1', 'id2', 'id3', 'id4', 'id5', 'id6')
+model.CLASSES = ('id0', 'id1', 'id2', 'id3', 'id4', 'id5', 'id6', 'id7', 'id8', 'id9')
 
 import tqdm
 
